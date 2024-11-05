@@ -139,27 +139,28 @@ const LandingPage: React.FC = () => {
           </div>
         </Link>
       </div>
-      <div className="flex justify-center items-center mt-10">
+      <div className="flex flex-col md:flex-row justify-center items-center mt-10 text-2xl">
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="border border-gray-300 rounded py-2 px-4 mr-4"
+          className="border border-gray-300 rounded py-2 px-4 mb-4 md:mb-0 md:mr-4 text-2xl md:mx-2"
           placeholder="Enter text"
         />
         <button
           onClick={handleSubmit}
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 mb-4 md:mb-0 md:mx-2"
         >
           VTutor, say something!
         </button>
         <button
           onClick={handleChangeStyle}
-          className="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-green-500 transition duration-300 ml-4"
+          className="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-green-500 transition duration-300 md:mx-2"
         >
           Change Style
         </button>
       </div>
+      <div className="md:hidden min-h-[50vh]"></div>
       <VTuber iframe_origin={iframeOrigin} />
     </div>
   );
