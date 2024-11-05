@@ -64,20 +64,36 @@ const LandingPage: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center bg-white min-h-[90vh] py-10 px-4">
       <div className="text-center mb-10 mt-5">
-        <div className="font-bold text-4xl flex text-center justify-center items-center text-gray-800">
+        <div className="font-bold text-4xl flex text-center justify-center items-center text-gray-800 ">
           <span className="mr-3">VTutor</span>
-          <Typewriter
-            options={{
-              strings: [
-                "Software Development Kit",
-                "for Multi-Model Feedback",
-                "Animated Pedagogical Agents",
-                "with Generative AI",
-              ],
-              autoStart: true,
-              loop: true,
-            }}
-          />
+          <span className="hidden md:inline">
+            <Typewriter
+              options={{
+                strings: [
+                  "Software Development Kit",
+                  "for Multi-Model Feedback",
+                  "Animated Pedagogical Agents",
+                  "with Generative AI",
+                ],
+                autoStart: true,
+                loop: true,
+              }}
+            />
+          </span>
+          <span className="inline md:hidden">
+            <Typewriter
+              options={{
+                strings: [
+                  "SDK",
+                  "for Feedback",
+                  "Animated Pedagogical Agents",
+                  "with GenAI",
+                ],
+                autoStart: true,
+                loop: true,
+              }}
+            />
+          </span>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full ">
