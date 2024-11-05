@@ -19,8 +19,8 @@ const LandingPage: React.FC = () => {
     "Привет, я VTutor!",
   ];
   const iframeOrigins = [
-    "https://1s1e9ue14cypff9k2ajuq1sxu2wzks4besj0i5tk5k5vc5uq2q.walrus.site",
-    "https://5nrs6pijc01lp7rtde88sh8gdt5uk3mddw3k9bts13otpqctv6.walrus.site",
+    "https://41txlu6nr3jx92ddlhjho4erfp4qrswrg3r01e8qutcm67amcn.walrus.site",
+    "https://3jbrw6n6kh3vnha7w9ijt56ed9t758zd4eocic7o7hoize50pm.walrus.site",
   ];
   const [text, setText] = useState(textOptions[0]);
   const [iframeOrigin, setIframeOrigin] = useState(iframeOrigins[0]);
