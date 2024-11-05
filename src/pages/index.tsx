@@ -96,6 +96,13 @@ const LandingPage: React.FC = () => {
           <div className="text-gray-800">
             <h2 className="text-2xl font-bold mb-2">SDK Live Demo</h2>
             <p className="mb-4">Easy to use examples in this link</p>
+            <a
+              href="https://codepen.io/AnonymousForReview/pen/rNXZaRJ"
+              target="_blank"
+              className="text-blue-500 hover:font-bold hover:underline hover:text-red-500"
+            >
+              (also check this failing example)
+            </a>
           </div>
         </Link>
 
