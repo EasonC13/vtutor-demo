@@ -14,7 +14,7 @@ export const NAV_LIST = [
   {
     id: "Demo Video",
     name: "Demo Video",
-    path: "https://youtu.be/eFlKVsQuPWI",
+    path: "https://www.youtube.com/watch?v=c29KpEF9hkM",
     newTab: true,
   },
   // {
