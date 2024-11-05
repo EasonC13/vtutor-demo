@@ -1,5 +1,5 @@
 // src/components/MuFIN/VTuber.tsx
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 interface VTuberProps {
   iframe_origin?: string;
@@ -9,6 +9,8 @@ export const VTuber: React.FC<VTuberProps> = ({
   iframe_origin = "https://6a75nc081bjm7x53qm01fsbz8a0dx952fqzqv2mnxs3zg3pzrl.walrus.site",
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [messageToSpeak, setMessageToSpeak] = useState("");
 
   useEffect(() => {
     const iframe = document.getElementById("unity-iframe") as HTMLIFrameElement;
@@ -17,7 +19,19 @@ export const VTuber: React.FC<VTuberProps> = ({
     }
   }, [iframe_origin]);
 
-  const handleFeedbackGenerated = (feedback: string): void => {
+  const handleFeedbackGenerated = (message: string) => {
+    setMessageToSpeak(message);
+  };
+
+  useEffect(() => {
+    if (!isSpeaking && messageToSpeak) {
+      speak(messageToSpeak);
+      setMessageToSpeak("");
+      setIsSpeaking(true);
+    }
+  }, [isSpeaking, messageToSpeak]);
+
+  const speak = (feedback: string): void => {
     const iframe = document.getElementById("unity-iframe") as HTMLIFrameElement;
     try {
       if (iframe && iframe.contentWindow) {
@@ -56,6 +70,9 @@ export const VTuber: React.FC<VTuberProps> = ({
             }
           }
         }
+      } else if (event.data.type === "VTuber_Message_Delivery_Complete") {
+        setIsSpeaking(false);
+        setMessageToSpeak("");
       }
     };
 
