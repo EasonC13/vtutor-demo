@@ -65,8 +65,8 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-white min-h-[90vh] py-10 px-4">
-      <div className="text-center mb-10 mt-5">
+    <div className="flex flex-col items-center justify-center bg-white min-h-[90vh] py-5 px-4">
+      <div className="text-center mb-5 mt-0">
         <div className="font-bold text-4xl flex text-center justify-center items-center text-gray-800 ">
           <span className="mr-3">VTutor</span>
           <span className="hidden md:inline">
