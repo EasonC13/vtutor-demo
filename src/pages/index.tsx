@@ -24,8 +24,10 @@ const LandingPage: React.FC = () => {
   ];
   const [text, setText] = useState(textOptions[0]);
   const [iframeOrigin, setIframeOrigin] = useState(iframeOrigins[0]);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const handleSubmit = () => {
+    setIsSpeaking(true);
     const event = new CustomEvent("feedbackGenerated", {
       detail: text,
     });
@@ -43,6 +45,7 @@ const LandingPage: React.FC = () => {
     const messageHandler = (event: MessageEvent) => {
       if (event.data.type === "VTuber_Message_Delivery_Complete") {
         nextText(event.data.message);
+        setIsSpeaking(false);
       }
     };
 
@@ -172,6 +175,7 @@ const LandingPage: React.FC = () => {
         />
         <button
           onClick={handleSubmit}
+          disabled={isSpeaking}
           className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 mb-4 md:mb-0 md:mx-2"
         >
           VTutor, say something!
@@ -180,7 +184,7 @@ const LandingPage: React.FC = () => {
           onClick={handleChangeStyle}
           className="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-green-500 transition duration-300 md:mx-2"
         >
-          Change Style
+          Change outfit
         </button>
       </div>
       <div className="md:hidden min-h-[50vh]"></div>
