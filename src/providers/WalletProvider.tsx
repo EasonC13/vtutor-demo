@@ -13,7 +13,7 @@ type Props = {
 
 import { registerStashedWallet } from "@mysten/zksend";
 
-registerStashedWallet("SuiGPT", {});
+registerStashedWallet("Vtutor", {});
 
 const SuiWalletProvider = ({ children }: Props) => {
   const networks = {

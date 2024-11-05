@@ -53,13 +53,12 @@ export default function App({ Component, pageProps }: AppProps) {
               isOpen={isOpen}
               setIsOpen={setIsOpen}
             />
-
-            <div className="flex-1 bg-black text-white">
+            <div className="flex-1 bg-white text-black">
               <div className="flexmd:px-20 md:mx-auto items-center justify-center ">
                 <Component {...pageProps} />
               </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
           </Layout>
         </main>
       </SuiWalletProvider>

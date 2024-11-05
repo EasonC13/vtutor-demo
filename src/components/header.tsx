@@ -46,23 +46,25 @@ const Header = ({ scrollingRef, isOpen, setIsOpen }: HeaderProps) => {
 
   return (
     <>
-      <header className={"left-0 top-0 z-20 w-full bg-[rgb(16,31,61)]"}>
+      <header className={"left-0 top-0 z-20 w-full bg-blue-100 text-black"}>
         <div className="max-w-360 mx-auto flex w-full items-center justify-between px-4.5 py-3 md:py-1 px-7 xl:px-20">
           <Link
             href="/"
-            className="flex ml-0 sm:ml-2 w-32 md:w-48 xl:w-40 h1 text-xl text-white"
+            className="flex ml-0 sm:ml-2 w-32 md:w-48 xl:w-40 h1 text-xl mb-1"
           >
-            <Image
-              src="/images/gift.png"
-              width={500 / 12}
+            {/* <Image
+              src="/images/suigpt-head.png"
+              width={400 / 12}
               height={2355 / 12}
               alt="Logo"
-            />
+            /> */}
             <div className="flex justify-center items-center">
-              <p className="ml-2 text-2xl block min-w-[4em]">Gift Drop</p>
-              <p className="ml-3 border hidden md:flex rounded-lg py-1 px-2 border-white text-white">
-                Beta
+              <p className="ml-2 text-2xl block min-w-[4em]">
+                <strong>VTutor</strong>
               </p>
+              {/* <p className="ml-3 border hidden md:flex rounded-lg py-1 px-2 border-black">
+                Alpha
+              </p> */}
             </div>
 
             {/* <p className="ml-3 border hidden md:inline rounded-lg p-1 border-black text-black">
@@ -87,7 +89,7 @@ const Header = ({ scrollingRef, isOpen, setIsOpen }: HeaderProps) => {
                       <Link
                         href={navItem.path}
                         target={target}
-                        className="mx-2 py-2 pl-3 pr-4 text-white hover:bg-gray-500 md:p-0 md:hover:bg-transparent md:hover:text-primary"
+                        className="mx-2 py-2 pl-3 pr-4  hover:bg-gray-500 md:p-0 md:hover:bg-transparent md:hover:text-primary"
                       >
                         {navItem.name}
                       </Link>
@@ -109,9 +111,9 @@ const Header = ({ scrollingRef, isOpen, setIsOpen }: HeaderProps) => {
                   Enter App
                 </button>
               </Link> */}
-              <div className="hidden md:flex">
+              {/* <div className="hidden md:flex">
                 {isConnected ? <WalletConnected /> : <Disconnected />}
-              </div>
+              </div> */}
 
               {/* <div className="xl:hidden">
                 {isConnected ? <WalletConnected /> : <></>}
@@ -136,7 +138,7 @@ const Header = ({ scrollingRef, isOpen, setIsOpen }: HeaderProps) => {
       >
         <div className="item-center flex w-full justify-end">
           <button
-            className="mb-2 text-white hover:text-gray-500"
+            className="mb-2  hover:text-gray-500"
             onClick={() => setIsOpen(false)}
           >
             <IoMdClose size={36} />
@@ -152,7 +154,7 @@ const Header = ({ scrollingRef, isOpen, setIsOpen }: HeaderProps) => {
               // onClick={() => mixpanel.track(`click_${navItem.id}`)}
             >
               <li className="w-full">
-                <div className="text-white my-2 w-full rounded px-4 py-2.5 text-2xl text-primary hover:bg-gray-300">
+                <div className=" my-2 w-full rounded px-4 py-2.5 text-2xl text-primary hover:bg-gray-300">
                   {navItem.name}
                 </div>
                 <div className="mx-4 border-[1px] border-dashed border-gray-500" />
@@ -168,9 +170,9 @@ const Header = ({ scrollingRef, isOpen, setIsOpen }: HeaderProps) => {
             Enter App
           </button>
         </Link> */}
-        <div className="text-base md:text-base ">
+        {/* <div className="text-base md:text-base ">
           {isConnected ? <WalletConnected /> : <DisconnectedInCard />}
-        </div>
+        </div> */}
       </div>
     </>
   );

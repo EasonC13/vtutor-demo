@@ -49,9 +49,9 @@ export const GetMoreBuckPopUp: React.FC<GetMoreBuckPopUpProps> = ({
           <div className="p-4">
             <div className="text-white">
               <img
-                src="/images/suigpt_logo.png"
+                src="/images/Vtutor_logo.png"
                 // src="/images/suiFren.png"
-                alt="SuiGPT Logo"
+                alt="Vtutor Logo"
                 width={150}
                 height={100}
               />
@@ -93,9 +93,9 @@ export const GetMoreBuckPopUp: React.FC<GetMoreBuckPopUpProps> = ({
           </div>
           <div className="absolute top-5 " style={{ right: "8rem" }}>
             <img
-              // src="/images/suigpt_logo.png"
+              // src="/images/Vtutor_logo.png"
               src="/images/suiFren.png"
-              alt="SuiGPT Logo"
+              alt="Vtutor Logo"
               className="transform scale-x-[-1]"
               width={150}
               height={100}

@@ -4,7 +4,7 @@ import Link from "next/link";
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 bg-black text-white text-xs md:pb-10 px-16 text-center">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 bg-white text-black text-xs md:pb-10 px-16 text-center">
       <div className="flex justify-center md:justify-start">
         {/* <Image
           className="w-48 xl:w-71 xl:h-21"

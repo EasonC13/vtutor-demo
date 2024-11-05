@@ -3,28 +3,28 @@ import { useRouter } from "next/router";
 
 // !STARTERCONF Change these default meta
 const defaultMeta = {
-  title: "SuiGPT",
-  siteName: "SuiGPT",
+  title: "Vtutor",
+  siteName: "Vtutor",
   description: "Giveaway on Sui Network. Developed by Bucket.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   openGraph: {
     type: "website",
-    url: "https://suigpt.tools",
-    title: "SuiGPT",
-    description: "SuiGPT description",
-    siteName: "SuiGPT",
-    images: [{ url: `https://suigpt.tools/images/SuiGPT-Picture.png` }],
+    url: "https://Vtutor.tools",
+    title: "Vtutor",
+    description: "Vtutor description",
+    siteName: "Vtutor",
+    images: [{ url: `https://Vtutor.tools/images/Vtutor-Picture.png` }],
   },
   twitter: {
     site: "@bucket_protocol",
     card: "summary",
-    title: "SuiGPT",
-    description: "SuiGPT description",
+    title: "Vtutor",
+    description: "Vtutor description",
     creator: "@bucket_protocol",
-    image: "https://suigpt.tools/images/SuiGPT-Picture.png",
+    image: "https://Vtutor.tools/images/Vtutor-Picture.png",
   },
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: "https://suigpt.tools",
+  url: "https://Vtutor.tools",
   type: "website",
   // robots: 'follow, index',
   robots: "",
@@ -32,7 +32,7 @@ const defaultMeta = {
    * No need to be filled, will be populated with openGraph function
    * If you wish to use a normal image, just specify the path below
    */
-  image: "/images/SuiGPT-Picture.png",
+  image: "/images/Vtutor-Picture.png",
   icon: "/favicon.ico",
 };
 
