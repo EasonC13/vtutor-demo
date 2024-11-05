@@ -107,7 +107,7 @@ const LandingPage: React.FC = () => {
         </Link>
 
         <Link
-          href="/copilot"
+          href="https://youtu.be/eFlKVsQuPWI"
           target="_blank"
           className="bg-blue-50 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-200"
         >

@@ -11,6 +11,12 @@ export const NAV_LIST = [
     path: "https://math.gptutor.tools/class/cm1tf3i690000sypn2qe7w81b/homework/cm1tf84xa0001sypnkcz1f4sa/cm342h1mu0000e53vedk0jl2b?vtutor=true&classId=cm1tf3i690000sypn2qe7w81b&homeworkProblemId=cm1tf84xa0001sypnkcz1f4sa&homeworkSubmissionId=cm1v5cfku0000i14o98prfv27",
     newTab: true,
   },
+  {
+    id: "Demo Video",
+    name: "Demo Video",
+    path: "https://youtu.be/eFlKVsQuPWI",
+    newTab: true,
+  },
   // {
   //   id: "API Docs",
   //   name: "API Docs",
