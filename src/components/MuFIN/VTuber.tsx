@@ -10,9 +10,15 @@ export const VTuber: React.FC<VTuberProps> = ({
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  useEffect(() => {
+    const iframe = document.getElementById("unity-iframe") as HTMLIFrameElement;
+    if (iframe) {
+      iframe.style.pointerEvents = "auto";
+    }
+  }, [iframe_origin]);
+
   const handleFeedbackGenerated = (feedback: string): void => {
     const iframe = document.getElementById("unity-iframe") as HTMLIFrameElement;
-    console.log({ feedback });
     try {
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.postMessage(
