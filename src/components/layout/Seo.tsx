@@ -8,7 +8,7 @@ const MetaTagsContainer = () => {
   const name = "VTutor";
   const description =
     "VTutor is VTutor is an open-source Software Development Kit (SDK) designed to integrate Animated Pedagogical Agents (APAs) with generative AI capabilities into web applications.";
-  const metadataImagePath = `https://vtutor.tools/vtutor/VTutor_Landing.png`;
+  const metadataImagePath = `https://vtutor.vercel.app/vtutor/VTutor_Landing.png`;
   const pathname = router.pathname;
   const page = pathname.split("/")[1] ?? "";
   const title = `${name} ${
