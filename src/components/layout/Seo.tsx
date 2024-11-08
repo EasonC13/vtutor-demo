@@ -1,142 +1,64 @@
+// src/components/layout/Seo.tsx
+
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-// !STARTERCONF Change these default meta
-const defaultMeta = {
-  title: "Vtutor",
-  siteName: "Vtutor",
-  description: "Giveaway on Sui Network. Developed by Bucket.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
-  openGraph: {
-    type: "website",
-    url: "https://Vtutor.tools",
-    title: "Vtutor",
-    description: "Vtutor description",
-    siteName: "Vtutor",
-    images: [{ url: `https://Vtutor.tools/images/Vtutor-Picture.png` }],
-  },
-  twitter: {
-    site: "@bucket_protocol",
-    card: "summary",
-    title: "Vtutor",
-    description: "Vtutor description",
-    creator: "@bucket_protocol",
-    image: "https://Vtutor.tools/images/Vtutor-Picture.png",
-  },
-  /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: "https://Vtutor.tools",
-  type: "website",
-  // robots: 'follow, index',
-  robots: "",
-  /**
-   * No need to be filled, will be populated with openGraph function
-   * If you wish to use a normal image, just specify the path below
-   */
-  image: "/images/Vtutor-Picture.png",
-  icon: "/favicon.ico",
-};
-
-type SeoProps = {
-  date?: string;
-  templateTitle?: string;
-} & Partial<typeof defaultMeta>;
-
-export default function Seo(props: SeoProps) {
+const MetaTagsContainer = () => {
   const router = useRouter();
-  const meta = {
-    ...defaultMeta,
-    ...props,
-  };
-  meta["title"] = props.templateTitle
-    ? `${props.templateTitle} | ${meta.siteName}`
-    : meta.title;
-
-  // Use siteName if there is templateTitle
-  // but show full title if there is none
-  // !STARTERCONF Follow config for opengraph, by deploying one on https://github.com/theodorusclarence/og
-  // ? Uncomment code below if you want to use default open graph
-  // meta['image'] = openGraph({
-  //   description: meta.description,
-  //   siteName: props.templateTitle ? meta.siteName : meta.title,
-  //   templateTitle: props.templateTitle,
-  // });
+  const name = "VTutor";
+  const description =
+    "VTutor is VTutor is an open-source Software Development Kit (SDK) designed to integrate Animated Pedagogical Agents (APAs) with generative AI capabilities into web applications.";
+  const metadataImagePath = `https://vtutor.tools/vtutor/VTutor_Landing.png`;
+  const pathname = router.pathname;
+  const page = pathname.split("/")[1] ?? "";
+  const title = `${name} ${
+    page &&
+    page !== "" &&
+    page !== null &&
+    `| ${page.slice(0, 1).toUpperCase() + page.slice(1)}`
+  }`;
+  const TwiterUserName = "@VTutor_Tools";
 
   return (
     <Head>
-      <title>{meta.title}</title>
-
-      <meta name="robots" content={meta.robots} />
-      <meta content={meta.description} name="description" />
-      <meta property="og:url" content={`${meta.url}${router.asPath}`} />
-      <link rel="canonical" href={`${meta.url}${router.asPath}`} />
-      {/* Open Graph */}
-      <meta property="og:type" content={meta.type} />
-      <meta property="og:site_name" content={meta.siteName} />
-      <meta property="og:description" content={meta.description} />
-      <meta property="og:title" content={meta.title} />
-      <meta name="image" property="og:image" content={meta.image} />
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary" />
-      {/* // !STARTERCONF Remove or change to your handle */}
-      <meta name="twitter:site" content={meta.twitter.site} />
-      <meta name="twitter:creator" content={meta.twitter.creator} />
-      <meta name="twitter:title" content={meta.twitter.title} />
-      <meta name="twitter:description" content={meta.twitter.description} />
-      <meta name="twitter:image" content={meta.twitter.image} />
-      {meta.date && (
-        <>
-          <meta property="article:published_time" content={meta.date} />
-          <meta
-            name="publish_date"
-            property="og:publish_date"
-            content={meta.date}
-          />
-          {/* // !STARTERCONF Remove or change to your name */}
-          <meta
-            name="author"
-            property="article:author"
-            content="Theodorus Clarence"
-          />
-        </>
+      <title>{title}</title>
+      <meta name="description" content={description} key="description" />
+      <meta property="og:title" content={title} key="title" />
+      <meta property="og:type" content="website" key="ogtype" />
+      {metadataImagePath && (
+        <meta property="og:image" content={metadataImagePath} key="ogimage" />
       )}
 
-      {/* Favicons */}
-      {/* {favicons.map((linkProps) => (
-        <link key={linkProps.href} {...linkProps} />
-      ))} */}
-      <link rel="icon" href={meta.icon} />
-      <meta name="msapplication-TileColor" content="#ffffff" />
-      <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
-      <meta name="theme-color" content="#ffffff" />
+      <meta
+        property="og:description"
+        content={description}
+        key="ogdescription"
+      />
+      <meta
+        name="twitter:card"
+        content="summary_large_image"
+        key="twittercard"
+      />
+      <meta
+        property="twitter:site"
+        content={TwiterUserName}
+        key="twittersite"
+      />
+      <meta property="twitter:title" content={title} key="twittertitle" />
+      <meta
+        property="twitter:description"
+        content={description}
+        key="twitterdescription"
+      />
+      <meta
+        property="twitter:image"
+        content={metadataImagePath}
+        key="twitterimage"
+      />
+      {/* Favicon */}
+      <link rel="shortcut icon" type="image/png" href="/favicon.png" />
     </Head>
   );
-}
+};
 
-// !STARTERCONF this is the default favicon, you can generate your own from https://realfavicongenerator.net/
-// ! then replace the whole /public/favicon folder and favicon.ico
-const favicons: Array<React.ComponentPropsWithoutRef<"link">> = [
-  {
-    rel: "apple-touch-icon",
-    sizes: "180x180",
-    href: "/favicon/apple-touch-icon.png",
-  },
-  {
-    rel: "icon",
-    type: "image/png",
-    sizes: "32x32",
-    href: "/favicon/favicon-32x32.png",
-  },
-  {
-    rel: "icon",
-    type: "image/png",
-    sizes: "16x16",
-    href: "/favicon/favicon-16x16.png",
-  },
-  { rel: "manifest", href: "/favicon/site.webmanifest" },
-  {
-    rel: "mask-icon",
-    href: "/favicon/safari-pinned-tab.svg",
-    color: "#00e887",
-  },
-  { rel: "shortcut icon", href: "/favicon/favicon.ico" },
-];
+export default MetaTagsContainer;
