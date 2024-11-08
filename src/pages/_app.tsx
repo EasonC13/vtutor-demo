@@ -42,26 +42,28 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [router.query]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SuiWalletProvider>
-        <LiquidLinkRegisterReferrer />
-        <main>
-          <Layout>
-            <Seo />
-            <Header
-              scrollingRef={scrollingRef}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-            />
-            <div className="flex-1 bg-white text-black">
-              <div className="flexmd:px-20 md:mx-auto items-center justify-center ">
-                <Component {...pageProps} />
+    <>
+      <Seo />
+      <QueryClientProvider client={queryClient}>
+        <SuiWalletProvider>
+          <LiquidLinkRegisterReferrer />
+          <main>
+            <Layout>
+              <Header
+                scrollingRef={scrollingRef}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
+              <div className="flex-1 bg-white text-black">
+                <div className="flexmd:px-20 md:mx-auto items-center justify-center ">
+                  <Component {...pageProps} />
+                </div>
               </div>
-            </div>
-            {/* <Footer /> */}
-          </Layout>
-        </main>
-      </SuiWalletProvider>
-    </QueryClientProvider>
+              {/* <Footer /> */}
+            </Layout>
+          </main>
+        </SuiWalletProvider>
+      </QueryClientProvider>
+    </>
   );
 }
