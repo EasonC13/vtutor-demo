@@ -48,7 +48,6 @@ const LandingPage: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("LANG", navigator.languages);
     if (typeof window !== "undefined") {
       // Initialize speech recognition
       const SpeechRecognition =
@@ -104,7 +103,7 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     const handleVTutorMessage = (event: MessageEvent) => {
-      if (event.data.type === "VTutor_Message_Delivery_Complete") {
+      if (event.data.type === "VTuber_Message_Delivery_Complete") {
         setIsSpeaking(false);
       }
     };
@@ -117,10 +116,10 @@ const LandingPage: React.FC = () => {
 
   const handleSubmit = () => {
     if (text.trim()) {
-      // setIsSpeaking(true);
+      setIsSpeaking(true);
       const output = "I Will Say: " + text;
-      // setVTutorText(output);
-      // console.log("output", output);
+      setVTutorText(output);
+      console.log("output", output);
       const event = new CustomEvent("feedbackGenerated", {
         detail: output,
       });
@@ -154,12 +153,16 @@ const LandingPage: React.FC = () => {
     }
   };
 
+  const isMobile = window.innerWidth < 768;
+
   return (
     <div className="mx-5 flex flex-col md:flex-row items-center justify-between bg-white min-h-[80vh] py-5 px-4">
       {/* VTutor - on top for mobile, right side on desktop */}
-      <div className="w-full md:hidden h-[80vw] flex items-center border rounded-lg mb-4">
-        <VTutorFull />
-      </div>
+      {isMobile && (
+        <div className="w-full h-[80vw] flex items-center border rounded-lg mb-4">
+          <VTutorFull />
+        </div>
+      )}
 
       {/* Controls section - full width on mobile, half width on desktop */}
       <div className="w-full md:w-1/2 md:pr-4">
@@ -208,10 +211,11 @@ const LandingPage: React.FC = () => {
         />
       </div>
 
-      <div className="hidden md:flex w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg">
-        {/* <VTutorFull /> */}
-        <VTutor />
-      </div>
+      {!isMobile && (
+        <div className="hidden md:flex w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg">
+          <VTutorFull />
+        </div>
+      )}
     </div>
   );
 };

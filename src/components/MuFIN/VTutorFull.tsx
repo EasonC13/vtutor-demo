@@ -21,9 +21,11 @@ export const VTutorFull: React.FC<VTutorProps> = ({
 
   const handleFeedbackGenerated = (message: string) => {
     setMessageToSpeak(message);
+    console.log({ messageToSpeak, isSpeaking });
   };
 
   useEffect(() => {
+    console.log("Use Effect", { messageToSpeak, isSpeaking });
     if (!isSpeaking && messageToSpeak) {
       speak(messageToSpeak);
       setMessageToSpeak("");
@@ -70,7 +72,7 @@ export const VTutorFull: React.FC<VTutorProps> = ({
             }
           }
         }
-      } else if (event.data.type === "VTutor_Message_Delivery_Complete") {
+      } else if (event.data.type === "VTuber_Message_Delivery_Complete") {
         setIsSpeaking(false);
         setMessageToSpeak("");
       }
@@ -79,6 +81,7 @@ export const VTutorFull: React.FC<VTutorProps> = ({
     const handleFeedbackGeneratedMessage = (
       event: CustomEvent<string>
     ): void => {
+      console.log("handleFeedbackGeneratedMessage");
       handleFeedbackGenerated(event.detail);
     };
 
@@ -106,7 +109,7 @@ export const VTutorFull: React.FC<VTutorProps> = ({
         ref={iframeRef}
         // style={{ bottom: "0px", right: "0px" }}
       />
-      {/* <div
+      <div
         id="overlay"
         className="fixed inset-0 z-50 bg-black opacity-0"
         onClick={(e) => {
@@ -135,7 +138,7 @@ export const VTutorFull: React.FC<VTutorProps> = ({
           ref={iframeRef}
           // style={{ bottom: "0px", right: "0px" }}
         />
-      </div> */}
+      </div>
     </>
   );
 };
