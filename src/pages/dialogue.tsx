@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { VTuberFull } from "@/components/MuFIN/VTuberFull";
+import { VTutorFull } from "@/components/MuFIN/VTutorFull";
+import { VTutor } from "@/components/MuFIN/VTutor";
 import { FaMicrophone } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -12,7 +13,7 @@ declare global {
 
 const LandingPage: React.FC = () => {
   const iframeOrigin =
-    "https://41txlu6nr3jx92ddlhjho4erfp4qrswrg3r01e8qutcm67amcn.walrus.site";
+    "https://21n9xvlltvccu73327jqjan64r2mlpqgwx2ry85a7bnj9l2wtg.walrus.site";
   const [text, setText] = useState<string>("");
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [isListening, setIsListening] = useState<boolean>(false);
@@ -24,13 +25,14 @@ const LandingPage: React.FC = () => {
   const [vtutorText, setVTutorText] = useState<string>("");
 
   const languages = [
-    { code: "zh-TW", name: "繁體中文" },
+    { code: "zh-TW", name: "繁體中文 (Traditional Chinese)" },
+    { code: "zh-CN", name: "簡體中文 (Simplified Chinese)" },
     { code: "en-US", name: "English (US)" },
-    { code: "ja-JP", name: "日本語" },
-    { code: "ko-KR", name: "한국어" },
-    { code: "es-ES", name: "Español" },
-    { code: "fr-FR", name: "Français" },
-    { code: "de-DE", name: "Deutsch" },
+    { code: "ja-JP", name: "日本語 (Japanese)" },
+    { code: "ko-KR", name: "한국어 (Korean)" },
+    { code: "es-ES", name: "Español (Spanish)" },
+    { code: "fr-FR", name: "Français (French)" },
+    { code: "de-DE", name: "Deutsch (German)" },
   ];
 
   const handleSpeechTimeout = () => {
@@ -101,15 +103,15 @@ const LandingPage: React.FC = () => {
   }, [selectedLanguage]);
 
   useEffect(() => {
-    const handleVTuberMessage = (event: MessageEvent) => {
-      if (event.data.type === "VTuber_Message_Delivery_Complete") {
+    const handleVTutorMessage = (event: MessageEvent) => {
+      if (event.data.type === "VTutor_Message_Delivery_Complete") {
         setIsSpeaking(false);
       }
     };
 
-    window.addEventListener("message", handleVTuberMessage);
+    window.addEventListener("message", handleVTutorMessage);
     return () => {
-      window.removeEventListener("message", handleVTuberMessage);
+      window.removeEventListener("message", handleVTutorMessage);
     };
   }, []);
 
@@ -118,6 +120,7 @@ const LandingPage: React.FC = () => {
       setIsSpeaking(true);
       const output = "I Will Say: " + text;
       setVTutorText(output);
+      console.log("output", output);
       const event = new CustomEvent("feedbackGenerated", {
         detail: output,
       });
@@ -151,7 +154,12 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className=" mx-5 flex flex-col md:flex-row items-center justify-between bg-white min-h-[80vh] py-5 px-4">
+    <div className="mx-5 flex flex-col md:flex-row items-center justify-between bg-white min-h-[80vh] py-5 px-4">
+      {/* VTutor - on top for mobile, right side on desktop */}
+      <div className="w-full md:hidden h-[80vw] flex items-center border rounded-lg mb-4">
+        <VTutorFull />
+      </div>
+
       {/* Controls section - full width on mobile, half width on desktop */}
       <div className="w-full md:w-1/2 md:pr-4">
         <select
@@ -171,8 +179,9 @@ const LandingPage: React.FC = () => {
             setText(e.target.value);
             textRef.current = e.target.value;
           }}
-          className="w-full h-48 p-4 border border-gray-300 rounded-lg mb-4 text-lg"
+          className="w-full h-20 p-4 border border-gray-300 rounded-lg mb-4 text-lg"
           placeholder="Enter text for VTutor to say..."
+          rows={2}
         />
         <div
           onClick={toggleMicrophone}
@@ -192,14 +201,15 @@ const LandingPage: React.FC = () => {
         <textarea
           value={vtutorText}
           readOnly
-          className="w-full h-48 p-4 border border-gray-300 rounded-lg mt-4 text-lg"
+          className="w-full h-20 p-4 border border-gray-300 rounded-lg mt-4 text-lg"
           placeholder="VTutor will say..."
+          rows={2}
         />
       </div>
 
-      {/* VTuber - centered vertically on mobile, right side on desktop */}
-      <div className="w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] flex items-center border rounded-lg">
-        <VTuberFull />
+      <div className="hidden md:flex w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg">
+        {/* <VTutorFull /> */}
+        <VTutor />
       </div>
     </div>
   );

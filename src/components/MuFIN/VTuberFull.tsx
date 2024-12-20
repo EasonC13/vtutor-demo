@@ -1,11 +1,11 @@
-// src/components/MuFIN/VTuber.tsx
+// src/components/MuFIN/VTutor.tsx
 import React, { useRef, useEffect, useState } from "react";
 
-interface VTuberProps {
+interface VTutorProps {
   iframe_origin?: string;
 }
 
-export const VTuberFull: React.FC<VTuberProps> = ({
+export const VTutorFull: React.FC<VTutorProps> = ({
   iframe_origin = "http://localhost:5500",
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -70,7 +70,7 @@ export const VTuberFull: React.FC<VTuberProps> = ({
             }
           }
         }
-      } else if (event.data.type === "VTuber_Message_Delivery_Complete") {
+      } else if (event.data.type === "VTutor_Message_Delivery_Complete") {
         setIsSpeaking(false);
         setMessageToSpeak("");
       }
@@ -106,26 +106,16 @@ export const VTuberFull: React.FC<VTuberProps> = ({
         ref={iframeRef}
         // style={{ bottom: "0px", right: "0px" }}
       />
-      <div
+      {/* <div
         id="overlay"
         className="fixed inset-0 z-50 bg-black opacity-0"
         onClick={(e) => {
           const overlay = e.currentTarget as HTMLDivElement;
           overlay.style.display = "none";
-          const iframe = document.getElementById(
-            "unity-iframe-overlay"
-          ) as HTMLIFrameElement;
-          if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage(
-              {
-                type: "UNITY_CLICK",
-                x: e.clientX,
-                y: e.clientY,
-              },
-              "*"
-            );
+          const overlayIframe = document.getElementById("unity-iframe-overlay");
+          if (overlayIframe) {
+            overlayIframe.remove();
           }
-
           const underlyingElements = document.elementsFromPoint(
             e.clientX,
             e.clientY
@@ -145,7 +135,7 @@ export const VTuberFull: React.FC<VTuberProps> = ({
           ref={iframeRef}
           // style={{ bottom: "0px", right: "0px" }}
         />
-      </div>
+      </div> */}
     </>
   );
 };

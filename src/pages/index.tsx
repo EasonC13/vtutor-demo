@@ -3,7 +3,7 @@ import Typewriter from "typewriter-effect";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
 import Image from "next/image";
-import { VTuber } from "@/components/MuFIN/VTuber";
+import { VTutor } from "@/components/MuFIN/VTutor";
 
 const LandingPage: React.FC = () => {
   const textOptions = [
@@ -19,6 +19,7 @@ const LandingPage: React.FC = () => {
     "Привет, я VTutor!",
   ];
   const iframeOrigins = [
+    // "http://localhost:5500",
     "https://41txlu6nr3jx92ddlhjho4erfp4qrswrg3r01e8qutcm67amcn.walrus.site",
     "https://3jbrw6n6kh3vnha7w9ijt56ed9t758zd4eocic7o7hoize50pm.walrus.site",
   ];
@@ -43,7 +44,7 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
-      if (event.data.type === "VTuber_Message_Delivery_Complete") {
+      if (event.data.type === "VTutor_Message_Delivery_Complete") {
         nextText(event.data.message);
         setIsSpeaking(false);
       }
@@ -188,7 +189,7 @@ const LandingPage: React.FC = () => {
         </button>
       </div>
       <div className="md:hidden min-h-[50vh]"></div>
-      <VTuber iframe_origin={iframeOrigin} />
+      <VTutor iframe_origin={iframeOrigin} />
     </div>
   );
 };

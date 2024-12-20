@@ -1,11 +1,11 @@
-// src/components/MuFIN/VTuber.tsx
+// src/components/MuFIN/VTutor.tsx
 import React, { useRef, useEffect, useState } from "react";
 
-interface VTuberProps {
+interface VTutorProps {
   iframe_origin?: string;
 }
 
-export const VTuber: React.FC<VTuberProps> = ({
+export const VTutor: React.FC<VTutorProps> = ({
   iframe_origin = "https://6a75nc081bjm7x53qm01fsbz8a0dx952fqzqv2mnxs3zg3pzrl.walrus.site",
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -70,7 +70,7 @@ export const VTuber: React.FC<VTuberProps> = ({
             }
           }
         }
-      } else if (event.data.type === "VTuber_Message_Delivery_Complete") {
+      } else if (event.data.type === "VTutor_Message_Delivery_Complete") {
         setIsSpeaking(false);
         setMessageToSpeak("");
       }
