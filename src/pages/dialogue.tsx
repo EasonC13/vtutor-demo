@@ -127,6 +127,7 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     const handleVTutorMessage = (event: MessageEvent) => {
+      console.log("handleVTutorMessage", event);
       if (event.data.type === "VTuber_Message_Delivery_Complete") {
         setIsSpeaking(false);
         if (!isRequestStop) {
@@ -320,7 +321,11 @@ const LandingPage: React.FC = () => {
   return (
     <div className="mx-5 flex flex-col md:flex-row-reverse gap-4 items-center justify-between bg-white min-h-[80vh] py-5 px-4">
       <div className={getVtutorContainerClass()} id="vtutor-container">
-        <VTutorFull iframe_origin={iframeOrigin} pipWindowRef={pipWindowRef} />
+        <VTutorFull
+          iframe_origin={iframeOrigin}
+          pipWindowRef={pipWindowRef}
+          parentIsSpeaking={isSpeaking}
+        />
         {!isPiPMode && (
           <FiExternalLink
             className="absolute top-2 right-2 cursor-pointer"

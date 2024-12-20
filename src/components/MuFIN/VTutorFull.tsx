@@ -4,14 +4,16 @@ import React, { useRef, useEffect, useState } from "react";
 interface VTutorProps {
   iframe_origin?: string;
   pipWindowRef?: React.RefObject<any>;
+  parentIsSpeaking?: boolean;
 }
 
 export const VTutorFull: React.FC<VTutorProps> = ({
   iframe_origin = "https://21n9xvlltvccu73327jqjan64r2mlpqgwx2ry85a7bnj9l2wtg.walrus.site",
   pipWindowRef,
+  parentIsSpeaking = false,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(parentIsSpeaking);
   const [messageToSpeak, setMessageToSpeak] = useState("");
 
   useEffect(() => {
@@ -20,6 +22,13 @@ export const VTutorFull: React.FC<VTutorProps> = ({
       iframe.style.pointerEvents = "auto";
     }
   }, [iframe_origin]);
+
+  useEffect(() => {
+    if (parentIsSpeaking == false && isSpeaking == true) {
+      setIsSpeaking(false);
+      setMessageToSpeak("");
+    }
+  }, [parentIsSpeaking]);
 
   const handleFeedbackGenerated = (message: string) => {
     setMessageToSpeak(message);
@@ -57,10 +66,7 @@ export const VTutorFull: React.FC<VTutorProps> = ({
 
   useEffect(() => {
     const handleIframeMessage = (event: MessageEvent): void => {
-      if (!iframe_origin.includes(event.origin)) {
-        return;
-      }
-
+      console.log("handleIframeMessage", event);
       if (event.data.type === "IFRAME_CLICK") {
         const iframe = document.getElementById(
           "unity-iframe"
@@ -99,17 +105,11 @@ export const VTutorFull: React.FC<VTutorProps> = ({
       handleFeedbackGeneratedMessage as EventListener
     );
 
-    pipWindowRef?.current?.addEventListener("message", handleIframeMessage);
-
     return () => {
       window.removeEventListener("message", handleIframeMessage);
       window.removeEventListener(
         "feedbackGenerated",
         handleFeedbackGeneratedMessage as EventListener
-      );
-      pipWindowRef?.current?.removeEventListener(
-        "message",
-        handleIframeMessage
       );
     };
   }, [iframe_origin, pipWindowRef]);
