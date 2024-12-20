@@ -35,6 +35,7 @@ const LandingPage: React.FC = () => {
     }[]
   >([]);
   const [isPiPMode, setIsPiPMode] = useState<boolean>(false);
+  const pipWindowRef = useRef<any>(null);
 
   const languages = [
     { code: "zh-CN", name: "簡體中文 (Simplified Chinese)" },
@@ -136,10 +137,20 @@ const LandingPage: React.FC = () => {
     };
 
     window.addEventListener("message", handleVTutorMessage);
+    if (pipWindowRef.current) {
+      pipWindowRef.current.addEventListener("message", handleVTutorMessage);
+    }
+
     return () => {
       window.removeEventListener("message", handleVTutorMessage);
+      if (pipWindowRef.current) {
+        pipWindowRef.current.removeEventListener(
+          "message",
+          handleVTutorMessage
+        );
+      }
     };
-  }, [isRequestStop]);
+  }, [isRequestStop, isPiPMode]);
 
   const handleSubmit = () => {
     // If text is empty, stop listening and return
@@ -186,6 +197,9 @@ const LandingPage: React.FC = () => {
         detail: response,
       });
       window.dispatchEvent(event);
+      if (pipWindowRef.current) {
+        pipWindowRef.current.dispatchEvent(event);
+      }
       conversationHistoryRef.current = [
         ...conversationHistoryRef.current,
         { role: "assistant", content: response },
@@ -258,21 +272,26 @@ const LandingPage: React.FC = () => {
         if (!isPiPMode && window.documentPictureInPicture) {
           const pipOptions = {
             initialAspectRatio: iframe.clientWidth / iframe.clientHeight,
-            lockAspectRatio: false,
+            lockAspectRatio: true,
             copyStyleSheets: true,
           };
 
           const pipWindow = await (
             window as any
           ).documentPictureInPicture.requestWindow(pipOptions);
+          pipWindowRef.current = pipWindow;
           iframe.parentNode.insertBefore(placeholder, iframe);
           pipWindow.document.body.append(iframe);
+
+          pipWindow.document.body.style.display = "flex";
+          pipWindow.document.body.style.margin = "0";
 
           pipWindow.addEventListener(
             "unload",
             () => {
               placeholder.parentNode?.replaceChild(iframe, placeholder);
               setIsPiPMode(false);
+              pipWindowRef.current = null;
             },
             { once: true }
           );
@@ -281,6 +300,7 @@ const LandingPage: React.FC = () => {
         } else if (isPiPMode) {
           (window as any).documentPictureInPicture.window.close();
           setIsPiPMode(false);
+          pipWindowRef.current = null;
         }
       } catch (error) {
         console.error("Error with Document Picture-in-Picture:", error);
@@ -290,13 +310,17 @@ const LandingPage: React.FC = () => {
     }
   };
 
+  const getVtutorContainerClass = () => {
+    if (isPiPMode) {
+      return "w-[100vh] h-[100vh] fixed";
+    }
+    return "w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg relative";
+  };
+
   return (
     <div className="mx-5 flex flex-col md:flex-row-reverse gap-4 items-center justify-between bg-white min-h-[80vh] py-5 px-4">
-      <div
-        className="w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg relative"
-        id="vtutor-container"
-      >
-        <VTutorFull iframe_origin={iframeOrigin} />
+      <div className={getVtutorContainerClass()} id="vtutor-container">
+        <VTutorFull iframe_origin={iframeOrigin} pipWindowRef={pipWindowRef} />
         {!isPiPMode && (
           <FiExternalLink
             className="absolute top-2 right-2 cursor-pointer"

@@ -3,10 +3,12 @@ import React, { useRef, useEffect, useState } from "react";
 
 interface VTutorProps {
   iframe_origin?: string;
+  pipWindowRef?: React.RefObject<any>;
 }
 
 export const VTutorFull: React.FC<VTutorProps> = ({
   iframe_origin = "https://21n9xvlltvccu73327jqjan64r2mlpqgwx2ry85a7bnj9l2wtg.walrus.site",
+  pipWindowRef,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -34,7 +36,13 @@ export const VTutorFull: React.FC<VTutorProps> = ({
   }, [isSpeaking, messageToSpeak]);
 
   const speak = (feedback: string): void => {
-    const iframe = document.getElementById("unity-iframe") as HTMLIFrameElement;
+    let iframe = document.getElementById("unity-iframe") as HTMLIFrameElement;
+    if (!iframe && pipWindowRef?.current) {
+      iframe = pipWindowRef.current.document.getElementById(
+        "unity-iframe"
+      ) as HTMLIFrameElement;
+    }
+    console.log({ iframe, pipWindowRef });
     try {
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.postMessage(
@@ -91,20 +99,26 @@ export const VTutorFull: React.FC<VTutorProps> = ({
       handleFeedbackGeneratedMessage as EventListener
     );
 
+    pipWindowRef?.current?.addEventListener("message", handleIframeMessage);
+
     return () => {
       window.removeEventListener("message", handleIframeMessage);
       window.removeEventListener(
         "feedbackGenerated",
         handleFeedbackGeneratedMessage as EventListener
       );
+      pipWindowRef?.current?.removeEventListener(
+        "message",
+        handleIframeMessage
+      );
     };
-  }, [iframe_origin]);
+  }, [iframe_origin, pipWindowRef]);
 
   return (
     <>
       <iframe
         src={iframe_origin}
-        className="w-full h-full"
+        className={`w-full h-full`}
         id="unity-iframe"
         ref={iframeRef}
         // style={{ bottom: "0px", right: "0px" }}
