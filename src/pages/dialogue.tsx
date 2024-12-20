@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { VTutorFull } from "@/components/MuFIN/VTutorFull";
-import { VTutor } from "@/components/MuFIN/VTutor";
-import { FaMicrophone } from "react-icons/fa";
 import { toast } from "react-toastify";
+import axios from "axios";
+import AnimatedWaves from "@/components/animation/AnimatedWaves";
+import LanguageSelector from "@/components/dialogue/LanguageSelector";
+import MicrophoneButton from "@/components/dialogue/MicrophoneButton";
+import TextInput from "@/components/dialogue/TextInput";
+import { VTutorFull } from "@/components/MuFIN/VTutorFull";
 
 declare global {
   interface Window {
@@ -17,16 +20,23 @@ const LandingPage: React.FC = () => {
   const [text, setText] = useState<string>("");
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [isListening, setIsListening] = useState<boolean>(false);
-  const [recognition, setRecognition] = useState<any>(null);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("zh-TW");
+  const [isRequestStop, setIsRequestStop] = useState<boolean>(false);
+  const recognitionRef = useRef<any>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("zh-CN");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hasStoppedRef = useRef<boolean>(false);
   const textRef = useRef<string>("");
   const [vtutorText, setVTutorText] = useState<string>("");
+  const conversationHistoryRef = useRef<
+    {
+      role: "user" | "assistant";
+      content: string;
+    }[]
+  >([]);
 
   const languages = [
-    { code: "zh-TW", name: "繁體中文 (Traditional Chinese)" },
     { code: "zh-CN", name: "簡體中文 (Simplified Chinese)" },
+    { code: "zh-TW", name: "繁體中文 (Traditional Chinese)" },
     { code: "en-US", name: "English (US)" },
     { code: "ja-JP", name: "日本語 (Japanese)" },
     { code: "ko-KR", name: "한국어 (Korean)" },
@@ -35,24 +45,30 @@ const LandingPage: React.FC = () => {
     { code: "de-DE", name: "Deutsch (German)" },
   ];
 
-  const handleSpeechTimeout = () => {
-    console.log("handleSpeechTimeout", { text: textRef.current });
-    if (!hasStoppedRef.current) {
-      setText((prev) => {
-        const newText = prev + "[stop]";
-        textRef.current = newText;
-        return newText;
-      });
+  const handleSpeechTimeout = async () => {
+    console.log("handleSpeechTimeout", {
+      text: textRef.current,
+      hasStoppedRef: hasStoppedRef.current,
+      timeoutRef: timeoutRef.current,
+    });
+    if (!hasStoppedRef.current && timeoutRef.current) {
+      timeoutRef.current = null;
       hasStoppedRef.current = true;
+      recognitionRef.current.stop();
+      setIsListening(false);
+      handleSubmit();
     }
   };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Initialize speech recognition
       const SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognition) {
+        if (recognitionRef.current) {
+          recognitionRef.current.stop();
+        }
+
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
@@ -62,6 +78,7 @@ const LandingPage: React.FC = () => {
           // Clear existing timeout
           if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
           }
 
           const transcript = Array.from(event.results)
@@ -73,7 +90,7 @@ const LandingPage: React.FC = () => {
           hasStoppedRef.current = false;
 
           // Set new timeout
-          timeoutRef.current = setTimeout(handleSpeechTimeout, 500);
+          timeoutRef.current = setTimeout(handleSpeechTimeout, 1000);
         };
 
         recognition.onerror = (event: any) => {
@@ -90,7 +107,11 @@ const LandingPage: React.FC = () => {
           }
         };
 
-        setRecognition(recognition);
+        recognitionRef.current = recognition;
+
+        if (isListening) {
+          recognition.start();
+        }
       }
     }
 
@@ -99,12 +120,16 @@ const LandingPage: React.FC = () => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [selectedLanguage]);
+  }, [selectedLanguage, isListening]);
 
   useEffect(() => {
     const handleVTutorMessage = (event: MessageEvent) => {
       if (event.data.type === "VTuber_Message_Delivery_Complete") {
         setIsSpeaking(false);
+        if (!isRequestStop) {
+          toggleMicrophone();
+        }
+        setIsRequestStop(false);
       }
     };
 
@@ -112,24 +137,70 @@ const LandingPage: React.FC = () => {
     return () => {
       window.removeEventListener("message", handleVTutorMessage);
     };
-  }, []);
+  }, [isRequestStop]);
 
   const handleSubmit = () => {
-    if (text.trim()) {
-      setIsSpeaking(true);
-      const output = "I Will Say: " + text;
-      setVTutorText(output);
-      console.log("output", output);
-      const event = new CustomEvent("feedbackGenerated", {
-        detail: output,
-      });
-      console.log({ event });
-      window.dispatchEvent(event);
+    // If text is empty, stop listening and return
+    if (!textRef.current.trim()) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+        setIsListening(false);
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      }
+      return;
     }
+
+    // Otherwise trigger timeout effect to end conversation
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      handleSpeechTimeout();
+      return;
+    }
+
+    const run = async () => {
+      if (
+        conversationHistoryRef.current[
+          conversationHistoryRef.current.length - 1
+        ]?.role === "user"
+      ) {
+        return;
+      }
+      const userInput = textRef.current;
+      setIsSpeaking(true);
+      conversationHistoryRef.current = [
+        ...conversationHistoryRef.current,
+        { role: "user", content: userInput },
+      ];
+
+      const result = await axios.post("/api/openai/chat", {
+        userInput,
+        conversationHistory: conversationHistoryRef.current,
+      });
+      const response = result.data;
+      setVTutorText(response);
+      const event = new CustomEvent("feedbackGenerated", {
+        detail: response,
+      });
+      window.dispatchEvent(event);
+      conversationHistoryRef.current = [
+        ...conversationHistoryRef.current,
+        { role: "assistant", content: response },
+      ];
+    };
+    run();
   };
 
   const toggleMicrophone = () => {
-    if (!recognition) {
+    if (isSpeaking) {
+      setIsRequestStop(true);
+      return;
+    }
+
+    setText("");
+    textRef.current = "";
+    if (!recognitionRef.current) {
       console.error("Speech recognition not supported");
       toast.error(
         "Speech recognition is not supported in this browser. Please use Chrome, Safari or Edge."
@@ -138,84 +209,76 @@ const LandingPage: React.FC = () => {
     }
 
     if (isListening) {
-      recognition.stop();
+      recognitionRef.current.stop();
       setIsListening(false);
       // Clear timeout when microphone is turned off
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     } else {
-      recognition.start();
+      recognitionRef.current.start();
       setIsListening(true);
       hasStoppedRef.current = false;
       // Start timeout when microphone is turned on
-      timeoutRef.current = setTimeout(handleSpeechTimeout, 1000);
+      if (textRef.current) {
+        timeoutRef.current = setTimeout(handleSpeechTimeout, 2000);
+      }
     }
   };
 
   const isMobile = window.innerWidth < 768;
 
-  return (
-    <div className="mx-5 flex flex-col md:flex-row items-center justify-between bg-white min-h-[80vh] py-5 px-4">
-      {/* VTutor - on top for mobile, right side on desktop */}
-      {isMobile && (
-        <div className="w-full h-[80vw] flex items-center border rounded-lg mb-4">
-          <VTutorFull iframe_origin={iframeOrigin} />
+  const getButtonText = () => {
+    if (isListening || isSpeaking) {
+      return (
+        <div className="flex items-center justify-center p-1">
+          <AnimatedWaves color="white" />{" "}
         </div>
-      )}
+      );
+    }
+    return "Chat With VTutor";
+  };
 
-      {/* Controls section - full width on mobile, half width on desktop */}
+  return (
+    <div className="mx-5 flex flex-col md:flex-row-reverse gap-4 items-center justify-between bg-white min-h-[80vh] py-5 px-4">
+      <div className="w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg">
+        <VTutorFull iframe_origin={iframeOrigin} />
+      </div>
+
       <div className="w-full md:w-1/2 md:pr-4">
-        <select
-          value={selectedLanguage}
-          onChange={(e) => setSelectedLanguage(e.target.value)}
-          className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-lg"
-        >
-          {languages.map((lang) => (
-            <option key={lang.code} value={lang.code}>
-              {lang.name}
-            </option>
-          ))}
-        </select>
-        <textarea
-          value={textRef.current}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setText(e.target.value);
-            textRef.current = e.target.value;
-          }}
-          className="w-full h-20 p-4 border border-gray-300 rounded-lg mb-4 text-lg"
-          placeholder="Enter text for VTutor to say..."
-          rows={2}
+        <LanguageSelector
+          selectedLanguage={selectedLanguage}
+          onChange={setSelectedLanguage}
+          languages={languages}
         />
-        <div
-          onClick={toggleMicrophone}
-          className={`w-32 h-32 mx-auto mb-4 rounded-full flex items-center justify-center cursor-pointer ${
-            isListening ? "bg-green-500" : "bg-gray-300"
-          }`}
-        >
-          <FaMicrophone className="w-16 h-16 text-white" />
-        </div>
+        <TextInput
+          text={textRef.current}
+          onChange={(value) => {
+            setText(value);
+            textRef.current = value;
+          }}
+          placeholder="Enter text for VTutor to say..."
+        />
+        <MicrophoneButton
+          isSpeaking={isSpeaking}
+          isListening={isListening}
+          isRequestStop={isRequestStop}
+          toggleMicrophone={toggleMicrophone}
+        />
         <button
           onClick={handleSubmit}
           disabled={isSpeaking}
-          className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 disabled:bg-gray-400"
+          className="w-full mb-2 bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300"
         >
-          Make VTutor Speak
+          {getButtonText()}
         </button>
-        <textarea
-          value={vtutorText}
-          readOnly
-          className="w-full h-20 p-4 border border-gray-300 rounded-lg mt-4 text-lg"
+        <TextInput
+          text={vtutorText}
+          onChange={() => {}}
           placeholder="VTutor will say..."
-          rows={2}
+          readOnly
         />
       </div>
-
-      {!isMobile && (
-        <div className="hidden md:flex w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg">
-          <VTutorFull iframe_origin={iframeOrigin} />
-        </div>
-      )}
     </div>
   );
 };

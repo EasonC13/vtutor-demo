@@ -27,7 +27,7 @@
     "@types/sjcl": "^1.0.34",
     "ai": "^2.2.36",
     "async-mutex": "^0.4.1",
-    "axios": "^1.6.2",
+    "axios": "^1.7.9",
     "bigint-buffer": "^1.1.5",
     "buckyou": "^1.0.0",
     "cors": "^2.8.5",

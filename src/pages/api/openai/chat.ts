@@ -12,7 +12,8 @@ export const config = {
 export default async function handler(req: NextRequest) {
   const { conversationHistory, userInput, api_key } = await req.json();
 
-  const prompt = getChatPrompt({ conversationHistory, userInput });
+  const prompt = getChatPrompt({ conversationHistory });
+
   let openai_api_key = api_key;
   if (!openai_api_key) {
     openai_api_key = process.env.OPENAI_API_KEY;
