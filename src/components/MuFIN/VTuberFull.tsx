@@ -58,7 +58,7 @@ export const VTuberFull: React.FC<VTuberProps> = ({
         const { x, y } = event.data;
 
         if (iframe) {
-          iframe.style.pointerEvents = "none";
+          // iframe.style.pointerEvents = "none";
           const underlyingElements = document.elementsFromPoint(x, y);
 
           for (let i = 0; i < underlyingElements.length; i++) {
@@ -98,14 +98,54 @@ export const VTuberFull: React.FC<VTuberProps> = ({
   }, [iframe_origin]);
 
   return (
-    <iframe
-      src={iframe_origin}
-      width="300px"
-      height="300px"
-      className="fixed w-screen h-screen"
-      id="unity-iframe"
-      ref={iframeRef}
-      style={{ bottom: "0px", right: "0px" }}
-    />
+    <>
+      <iframe
+        src={iframe_origin}
+        className="w-full h-full"
+        id="unity-iframe"
+        ref={iframeRef}
+        // style={{ bottom: "0px", right: "0px" }}
+      />
+      <div
+        id="overlay"
+        className="fixed inset-0 z-50 bg-black opacity-0"
+        onClick={(e) => {
+          const overlay = e.currentTarget as HTMLDivElement;
+          overlay.style.display = "none";
+          const iframe = document.getElementById(
+            "unity-iframe-overlay"
+          ) as HTMLIFrameElement;
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(
+              {
+                type: "UNITY_CLICK",
+                x: e.clientX,
+                y: e.clientY,
+              },
+              "*"
+            );
+          }
+
+          const underlyingElements = document.elementsFromPoint(
+            e.clientX,
+            e.clientY
+          );
+          for (const element of underlyingElements) {
+            if (element instanceof HTMLElement) {
+              element.click();
+              element.focus();
+            }
+          }
+        }}
+      >
+        <iframe
+          src={iframe_origin}
+          className="w-full h-full"
+          id="unity-iframe-overlay"
+          ref={iframeRef}
+          // style={{ bottom: "0px", right: "0px" }}
+        />
+      </div>
+    </>
   );
 };

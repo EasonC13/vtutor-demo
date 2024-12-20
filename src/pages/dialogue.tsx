@@ -151,8 +151,9 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-white min-h-[90vh] py-5 px-4">
-      <div className="w-full max-w-2xl">
+    <div className=" mx-5 flex flex-col md:flex-row items-center justify-between bg-white min-h-[80vh] py-5 px-4">
+      {/* Controls section - full width on mobile, half width on desktop */}
+      <div className="w-full md:w-1/2 md:pr-4">
         <select
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
@@ -195,8 +196,11 @@ const LandingPage: React.FC = () => {
           placeholder="VTutor will say..."
         />
       </div>
-      <div className="md:hidden min-h-[50vh]"></div>
-      <VTuberFull />
+
+      {/* VTuber - centered vertically on mobile, right side on desktop */}
+      <div className="w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] flex items-center border rounded-lg">
+        <VTuberFull />
+      </div>
     </div>
   );
 };
