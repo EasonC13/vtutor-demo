@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import "@/styles/markdown.css";
 import "@mysten/dapp-kit/dist/index.css";
 import type { AppProps } from "next/app";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
@@ -62,6 +64,7 @@ export default function App({ Component, pageProps }: AppProps) {
               {/* <Footer /> */}
             </Layout>
           </main>
+          <ToastContainer />
         </SuiWalletProvider>
       </QueryClientProvider>
     </>

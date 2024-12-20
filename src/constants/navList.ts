@@ -6,6 +6,12 @@ export const NAV_LIST = [
     newTab: false,
   },
   {
+    id: "Dialogue Demo",
+    name: "Dialogue Demo",
+    path: "/dialogue",
+    newTab: false,
+  },
+  {
     id: "Math Feedback Demo",
     name: "Math Feedback Demo",
     path: "https://math.gptutor.tools/class/cm1tf3i690000sypn2qe7w81b/homework/cm1tf84xa0001sypnkcz1f4sa/cm1v5q4or00041bq4bbm56cfz?vtutor=true",
