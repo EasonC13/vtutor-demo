@@ -117,13 +117,14 @@ const LandingPage: React.FC = () => {
 
   const handleSubmit = () => {
     if (text.trim()) {
-      setIsSpeaking(true);
+      // setIsSpeaking(true);
       const output = "I Will Say: " + text;
-      setVTutorText(output);
-      console.log("output", output);
+      // setVTutorText(output);
+      // console.log("output", output);
       const event = new CustomEvent("feedbackGenerated", {
         detail: output,
       });
+      console.log({ event });
       window.dispatchEvent(event);
     }
   };
