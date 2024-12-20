@@ -6,6 +6,7 @@ import LanguageSelector from "@/components/dialogue/LanguageSelector";
 import MicrophoneButton from "@/components/dialogue/MicrophoneButton";
 import TextInput from "@/components/dialogue/TextInput";
 import { VTutorFull } from "@/components/MuFIN/VTutorFull";
+import { FiExternalLink } from "react-icons/fi";
 
 declare global {
   interface Window {
@@ -33,6 +34,7 @@ const LandingPage: React.FC = () => {
       content: string;
     }[]
   >([]);
+  const [isPiPMode, setIsPiPMode] = useState<boolean>(false);
 
   const languages = [
     { code: "zh-CN", name: "簡體中文 (Simplified Chinese)" },
@@ -239,10 +241,68 @@ const LandingPage: React.FC = () => {
     return "Chat With VTutor";
   };
 
+  const handlePiP = async () => {
+    const iframe: any = document.getElementById("vtutor-container");
+    const placeholder = document.createElement("div");
+    placeholder.style.width = iframe.clientWidth + "px";
+    placeholder.style.height = iframe.clientHeight + "px";
+    placeholder.style.border = "2px dashed #ccc";
+    placeholder.style.display = "flex";
+    placeholder.style.alignItems = "center";
+    placeholder.style.justifyContent = "center";
+    placeholder.innerHTML = "VTutor is in Picture-in-Picture mode";
+    placeholder.className = "bg-gray-100 rounded-lg";
+
+    if (iframe && "documentPictureInPicture" in window) {
+      try {
+        if (!isPiPMode && window.documentPictureInPicture) {
+          const pipOptions = {
+            initialAspectRatio: iframe.clientWidth / iframe.clientHeight,
+            lockAspectRatio: false,
+            copyStyleSheets: true,
+          };
+
+          const pipWindow = await (
+            window as any
+          ).documentPictureInPicture.requestWindow(pipOptions);
+          iframe.parentNode.insertBefore(placeholder, iframe);
+          pipWindow.document.body.append(iframe);
+
+          pipWindow.addEventListener(
+            "unload",
+            () => {
+              placeholder.parentNode?.replaceChild(iframe, placeholder);
+              setIsPiPMode(false);
+            },
+            { once: true }
+          );
+
+          setIsPiPMode(true);
+        } else if (isPiPMode) {
+          (window as any).documentPictureInPicture.window.close();
+          setIsPiPMode(false);
+        }
+      } catch (error) {
+        console.error("Error with Document Picture-in-Picture:", error);
+      }
+    } else {
+      console.error("No iframe element found or Document PiP not supported.");
+    }
+  };
+
   return (
     <div className="mx-5 flex flex-col md:flex-row-reverse gap-4 items-center justify-between bg-white min-h-[80vh] py-5 px-4">
-      <div className="w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg">
+      <div
+        className="w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg relative"
+        id="vtutor-container"
+      >
         <VTutorFull iframe_origin={iframeOrigin} />
+        {!isPiPMode && (
+          <FiExternalLink
+            className="absolute top-2 right-2 cursor-pointer"
+            onClick={handlePiP}
+          />
+        )}
       </div>
 
       <div className="w-full md:w-1/2 md:pr-4">
