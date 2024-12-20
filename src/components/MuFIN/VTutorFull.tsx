@@ -6,7 +6,7 @@ interface VTutorProps {
 }
 
 export const VTutorFull: React.FC<VTutorProps> = ({
-  iframe_origin = "http://localhost:5500",
+  iframe_origin = "https://21n9xvlltvccu73327jqjan64r2mlpqgwx2ry85a7bnj9l2wtg.walrus.site",
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);

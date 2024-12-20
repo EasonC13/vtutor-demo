@@ -160,7 +160,7 @@ const LandingPage: React.FC = () => {
       {/* VTutor - on top for mobile, right side on desktop */}
       {isMobile && (
         <div className="w-full h-[80vw] flex items-center border rounded-lg mb-4">
-          <VTutorFull />
+          <VTutorFull iframe_origin={iframeOrigin} />
         </div>
       )}
 
@@ -213,7 +213,7 @@ const LandingPage: React.FC = () => {
 
       {!isMobile && (
         <div className="hidden md:flex w-full md:w-1/2 md:pl-4 h-[80vw] md:h-[40vw] items-center border rounded-lg">
-          <VTutorFull />
+          <VTutorFull iframe_origin={iframeOrigin} />
         </div>
       )}
     </div>
