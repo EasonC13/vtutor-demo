@@ -30,9 +30,7 @@ export const config = {
 };
 
 export default async function handler(req: NextRequest) {
-  const ip = await fetch("https://api.ipify.org?format=json")
-    .then((res) => res.json())
-    .then((data) => data.ip);
+  const ip = await fetch("https://ip.me").then((res) => res.text());
 
   console.log("Server IP:", ip);
   const { conversationHistory, userInput, api_key } = await req.json();
