@@ -7,6 +7,8 @@ import MicrophoneButton from "@/components/dialogue/MicrophoneButton";
 import TextInput from "@/components/dialogue/TextInput";
 import { VTutorFull } from "@/components/MuFIN/VTutorFull";
 import { FiExternalLink } from "react-icons/fi";
+import { translate } from "@vitalets/google-translate-api";
+import { HttpProxyAgent } from "http-proxy-agent";
 
 declare global {
   interface Window {
@@ -14,6 +16,9 @@ declare global {
     webkitSpeechRecognition?: any;
   }
 }
+
+// Set up CORS proxy
+// translate.setCORS("http://cors-anywhere.herokuapp.com/");
 
 const LandingPage: React.FC = () => {
   const iframeOrigin =
@@ -36,6 +41,8 @@ const LandingPage: React.FC = () => {
   >([]);
   const [isPiPMode, setIsPiPMode] = useState<boolean>(false);
   const pipWindowRef = useRef<any>(null);
+  const [nativeLanguage, setNativeLanguage] = useState<string>("en-US");
+  const [TranslatedVTutorText, setTranslatedVTutorText] = useState<string>("");
 
   const languages = [
     { code: "zh-CN", name: "簡體中文 (Simplified Chinese)" },
@@ -152,6 +159,23 @@ const LandingPage: React.FC = () => {
       }
     };
   }, [isRequestStop, isPiPMode]);
+
+  useEffect(() => {
+    const translateText = async () => {
+      if (vtutorText) {
+        try {
+          const response = await axios.post("/api/translate", {
+            text: vtutorText,
+            targetLanguage: nativeLanguage.split("-")[0],
+          });
+          setTranslatedVTutorText(response.data.translatedText);
+        } catch (err) {
+          console.error("Translation error:", err);
+        }
+      }
+    };
+    translateText();
+  }, [vtutorText, nativeLanguage]);
 
   const handleSubmit = () => {
     // If text is empty, stop listening and return
@@ -336,9 +360,16 @@ const LandingPage: React.FC = () => {
 
       <div className="w-full md:w-1/2 md:pr-4">
         <LanguageSelector
+          selectedLanguage={nativeLanguage}
+          onChange={setNativeLanguage}
+          languages={languages}
+          label="Your Native Language"
+        />
+        <LanguageSelector
           selectedLanguage={selectedLanguage}
           onChange={setSelectedLanguage}
           languages={languages}
+          label="The Language You Are Speaking"
         />
         <TextInput
           text={textRef.current}
@@ -366,6 +397,12 @@ const LandingPage: React.FC = () => {
           onChange={() => {}}
           placeholder="VTutor will say..."
           readOnly
+        />
+        <textarea
+          value={TranslatedVTutorText}
+          readOnly
+          className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-lg"
+          placeholder="Translated text will appear here..."
         />
       </div>
     </div>
