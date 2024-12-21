@@ -7,7 +7,7 @@ import { getChatPrompt } from "@/prompt/getChatPrompt";
 
 export const config = {
   runtime: "edge",
-  preferredRegion: [
+  regions: [
     "arn1",
     "bom1",
     "cdg1",
