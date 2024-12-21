@@ -30,6 +30,11 @@ export const config = {
 };
 
 export default async function handler(req: NextRequest) {
+  const ip = await fetch("https://api.ipify.org?format=json")
+    .then((res) => res.json())
+    .then((data) => data.ip);
+
+  console.log("Server IP:", ip);
   const { conversationHistory, userInput, api_key } = await req.json();
 
   const prompt = getChatPrompt({ conversationHistory });
