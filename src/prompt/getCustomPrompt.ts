@@ -1,8 +1,10 @@
-// src/prompt/getChatPrompt.ts
-export function getChatPrompt({
+// src/prompt/getCustomPrompt.ts
+export function getCustomPrompt({
   conversationHistory,
+  customPrompt,
 }: {
   conversationHistory: any;
+  customPrompt: string;
 }) {
   const prompt = [
     {
@@ -12,8 +14,7 @@ export function getChatPrompt({
     },
     {
       role: "system",
-      content:
-        "You are a loyal friend of the user. You respond to the user's input in a friendly and engaging manner.",
+      content: customPrompt,
     },
     ...conversationHistory.map((message: any) => ({
       role: message.role,

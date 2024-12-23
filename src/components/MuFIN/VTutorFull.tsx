@@ -1,4 +1,4 @@
-// src/components/MuFIN/VTutor.tsx
+// src/components/MuFIN/VTutorFull.tsx
 import React, { useRef, useEffect, useState } from "react";
 
 interface VTutorProps {
@@ -66,7 +66,6 @@ export const VTutorFull: React.FC<VTutorProps> = ({
 
   useEffect(() => {
     const handleIframeMessage = (event: MessageEvent): void => {
-      console.log("handleIframeMessage", event);
       if (event.data.type === "IFRAME_CLICK") {
         const iframe = document.getElementById(
           "unity-iframe"

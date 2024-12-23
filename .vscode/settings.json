@@ -13,5 +13,13 @@
   "python.formatting.provider": "none",
   "cSpell.words": [
     "vtutor"
-  ]
+  ],
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.(ts|tsx|js|jsx)$",
+        "cmd": "python3 /Users/eason/codes/Python/update_file_comment.py --file_path ${file} --workspace_path ${workspaceFolder}"
+      }
+    ]
+  }
 }

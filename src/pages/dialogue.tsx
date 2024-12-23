@@ -1,3 +1,4 @@
+// src/pages/dialogue.tsx
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -9,6 +10,7 @@ import { VTutorFull } from "@/components/MuFIN/VTutorFull";
 import { FiExternalLink } from "react-icons/fi";
 import { translate } from "@vitalets/google-translate-api";
 import { HttpProxyAgent } from "http-proxy-agent";
+import PromptSelector from "@/components/dialogue/PromptSelector";
 
 declare global {
   interface Window {
@@ -43,6 +45,8 @@ const LandingPage: React.FC = () => {
   const pipWindowRef = useRef<any>(null);
   const [nativeLanguage, setNativeLanguage] = useState<string>("en-US");
   const [TranslatedVTutorText, setTranslatedVTutorText] = useState<string>("");
+  const [selectedPrompt, setSelectedPrompt] = useState<string>("default");
+  const [customPrompt, setCustomPrompt] = useState<string>("");
 
   const languages = [
     { code: "zh-CN", name: "簡體中文 (Simplified Chinese)" },
@@ -134,7 +138,6 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     const handleVTutorMessage = (event: MessageEvent) => {
-      console.log("handleVTutorMessage", event);
       if (event.data.type === "VTuber_Message_Delivery_Complete") {
         setIsSpeaking(false);
         if (!isRequestStop) {
@@ -215,6 +218,8 @@ const LandingPage: React.FC = () => {
       const result = await axios.post("/api/openai/chat", {
         userInput,
         conversationHistory: conversationHistoryRef.current,
+        selectedPrompt,
+        customPrompt,
       });
       const response = result.data;
       setVTutorText(response);
@@ -371,6 +376,19 @@ const LandingPage: React.FC = () => {
           languages={languages}
           label="The Language You Are Speaking"
         />
+        <PromptSelector
+          selectedPrompt={selectedPrompt}
+          setSelectedPrompt={setSelectedPrompt}
+          setSelectedLanguage={setSelectedLanguage}
+        />
+        {selectedPrompt === "customize" && (
+          <textarea
+            value={customPrompt}
+            onChange={(e) => setCustomPrompt(e.target.value)}
+            className="w-full p-3 mb-4 border border-gray-300 rounded-lg text-lg"
+            placeholder="Enter your custom prompt here..."
+          />
+        )}
         <TextInput
           text={textRef.current}
           onChange={(value) => {

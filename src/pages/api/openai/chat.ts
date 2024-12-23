@@ -1,9 +1,12 @@
-// src/pages/api/math/openai.ts
+// src/pages/api/openai/chat.ts
 import OpenAI from "openai";
 import { NextApiRequest, NextApiResponse } from "next";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { NextRequest } from "next/server";
 import { getChatPrompt } from "@/prompt/getChatPrompt";
+import { getPoJapanesePrompt } from "@/prompt/getPoJapanesePrompt";
+import { getCustomPrompt } from "@/prompt/getCustomPrompt";
+import { getEasonChinesePrompt } from "@/prompt/getEasonChinesePrompt";
 
 export const config = {
   runtime: "edge",
@@ -33,9 +36,24 @@ export default async function handler(req: NextRequest) {
   const ip = await fetch("https://ip.me").then((res) => res.text());
 
   console.log("Server IP:", ip);
-  const { conversationHistory, userInput, api_key } = await req.json();
+  const {
+    conversationHistory,
+    userInput,
+    api_key,
+    selectedPrompt,
+    customPrompt,
+  } = await req.json();
 
-  const prompt = getChatPrompt({ conversationHistory });
+  let prompt;
+  if (selectedPrompt === "default") {
+    prompt = getChatPrompt({ conversationHistory });
+  } else if (selectedPrompt === "japanese") {
+    prompt = getPoJapanesePrompt({ conversationHistory });
+  } else if (selectedPrompt === "customize") {
+    prompt = getCustomPrompt({ conversationHistory, customPrompt });
+  } else if (selectedPrompt === "chinese") {
+    prompt = getEasonChinesePrompt({ conversationHistory });
+  }
 
   let openai_api_key = api_key;
   if (!openai_api_key) {
