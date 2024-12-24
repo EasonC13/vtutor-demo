@@ -17,6 +17,7 @@
     "@mysten/zklogin": "^0.3.2",
     "@mysten/zksend": "^0.9.10",
     "@noble/curves": "^1.3.0",
+    "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta",
     "@polymedia/webutils": "^2.4.0",
     "@prisma/client": "^5.11.0",
     "@prisma/extension-accelerate": "^1.0.0",

@@ -1,3 +1,4 @@
+// src/components/header.tsx
 "use client";
 
 import { NAV_LIST } from "@/constants/navList";
@@ -122,7 +123,7 @@ const Header = ({ scrollingRef, isOpen, setIsOpen }: HeaderProps) => {
                 className="ml-2 mb-2 text-primary hover:text-[#2E79DC] md:hidden"
                 onClick={() => setIsOpen(true)}
               >
-                <AiOutlineMenu size={40} color="white" />
+                <AiOutlineMenu size={40} color="black" />
               </button>
             </div>
           </nav>
