@@ -16,13 +16,14 @@ export default function RealtimePage() {
         apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
         dangerouslyAllowAPIKeyInBrowser: true,
       });
-      realtimeClient.updateSession({ voice: "alloy" });
-
-      // Configure session parameters
       realtimeClient.updateSession({
-        instructions: "You are a great, upbeat friend.",
+        instructions: "Your name is Alice, You are a great, upbeat friend.",
+      });
+      realtimeClient.updateSession({
         voice: "alloy",
-        turn_detection: { type: "none" as any },
+      });
+      realtimeClient.updateSession({
+        turn_detection: { type: "server_vad" }, // or 'server_vad'
         input_audio_transcription: { model: "whisper-1" },
       });
 
@@ -68,6 +69,7 @@ export default function RealtimePage() {
         console.log("await realtimeClient.connect();");
         await realtimeClient.connect();
         console.log("AAAA");
+
         setClient(realtimeClient);
       } catch (error) {
         console.error("Failed to connect to Realtime API:", error);
