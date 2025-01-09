@@ -70,8 +70,9 @@ export const VTutor: React.FC<VTutorProps> = ({
             }
           }
         }
-      } else if (event.data.type === "VTutor_Message_Delivery_Complete") {
+      } else if (event.data.type === "VTuber_Message_Delivery_Complete") {
         setIsSpeaking(false);
+        console.log("VTuber_Message_Delivery_Complete");
         setMessageToSpeak("");
       }
     };

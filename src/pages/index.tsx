@@ -1,3 +1,4 @@
+// src/pages/index.tsx
 import React, { useState, useEffect } from "react";
 import Typewriter from "typewriter-effect";
 import Link from "next/link";
@@ -44,7 +45,7 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     const messageHandler = (event: MessageEvent) => {
-      if (event.data.type === "VTutor_Message_Delivery_Complete") {
+      if (event.data.type === "VTuber_Message_Delivery_Complete") {
         nextText(event.data.message);
         setIsSpeaking(false);
       }
