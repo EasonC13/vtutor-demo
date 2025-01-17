@@ -24,7 +24,7 @@ declare global {
 
 const LandingPage: React.FC = () => {
   const iframeOrigin =
-    "https://21n9xvlltvccu73327jqjan64r2mlpqgwx2ry85a7bnj9l2wtg.walrus.site";
+    "https://47jn8b9e50e4hrtkyuxvws9493vvq4rj63val2whq0t73y47o3.walrus.site";
   const [text, setText] = useState<string>("");
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [isListening, setIsListening] = useState<boolean>(false);

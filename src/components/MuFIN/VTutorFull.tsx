@@ -8,7 +8,7 @@ interface VTutorProps {
 }
 
 export const VTutorFull: React.FC<VTutorProps> = ({
-  iframe_origin = "https://21n9xvlltvccu73327jqjan64r2mlpqgwx2ry85a7bnj9l2wtg.walrus.site",
+  iframe_origin = "https://41txlu6nr3jx92ddlhjho4erfp4qrswrg3r01e8qutcm67amcn.walrus.site",
   pipWindowRef,
   parentIsSpeaking = false,
 }) => {
