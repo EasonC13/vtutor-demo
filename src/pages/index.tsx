@@ -22,7 +22,7 @@ const LandingPage: React.FC = () => {
   const iframeOrigins = [
     // "http://localhost:5500",
     "https://41txlu6nr3jx92ddlhjho4erfp4qrswrg3r01e8qutcm67amcn.walrus.site",
-    // "https://3jbrw6n6kh3vnha7w9ijt56ed9t758zd4eocic7o7hoize50pm.walrus.site",
+    "https://3og1thevzdoa7419yo93sciht3agbou8oyskak3cvp3rgnvzny.walrus.site",
   ];
   const [text, setText] = useState(textOptions[0]);
   const [iframeOrigin, setIframeOrigin] = useState(iframeOrigins[0]);
