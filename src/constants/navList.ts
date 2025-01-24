@@ -1,3 +1,4 @@
+// src/constants/navList.ts
 export const NAV_LIST = [
   {
     id: "Home",
@@ -20,7 +21,7 @@ export const NAV_LIST = [
   {
     id: "Demo Video",
     name: "Demo Video",
-    path: "https://www.youtube.com/watch?v=c29KpEF9hkM",
+    path: "https://www.youtube.com/watch?v=muJfDT6uXW4",
     newTab: true,
   },
   // {
