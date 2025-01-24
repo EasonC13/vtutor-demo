@@ -147,7 +147,7 @@ const LandingPage: React.FC = () => {
           </div>
         </Link>
         <Link
-          href="/vtutor/LAK25_VTutor.pdf"
+          href="/vtutor/VTutor_CHI_Demo_Preprint.pdf"
           target="_blank"
           className="bg-blue-50 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-200"
         >
