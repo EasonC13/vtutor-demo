@@ -1,8 +1,8 @@
 # Note for reviewers:
 
-## This is the source code of https://vtutor.tools
+### This is the source code of https://vtutor.tools
 
-## [Link to React SDK](https://github.com/VTutorTools/vtutor-vercel-app/blob/main/src/components/MuFIN/VTutor.tsx)
+### [Link to React SDK](https://github.com/VTutorTools/vtutor-vercel-app/blob/main/src/components/MuFIN/VTutor.tsx)
 
 ## Getting Started
 
