@@ -72,7 +72,8 @@ const LandingPage: React.FC = () => {
         <div className="font-bold text-4xl flex text-center justify-center items-center text-gray-800 ">
           <span className="mr-3">VTutor</span>
           <span className="hidden md:inline">
-            <Typewriter
+            Software Development Kit
+            {/* <Typewriter
               options={{
                 strings: [
                   "Software Development Kit",
@@ -83,7 +84,7 @@ const LandingPage: React.FC = () => {
                 autoStart: true,
                 loop: true,
               }}
-            />
+            /> */}
           </span>
           <span className="inline md:hidden">
             <Typewriter
@@ -167,27 +168,29 @@ const LandingPage: React.FC = () => {
           </div>
         </Link>
       </div>
-      <div className="flex flex-col md:flex-row justify-center items-center mt-10 text-2xl">
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="border border-gray-300 rounded py-2 px-4 mb-4 md:mb-0 md:mr-4 text-2xl md:mx-2"
-          placeholder="Enter text"
-        />
-        <button
-          onClick={handleSubmit}
-          disabled={isSpeaking}
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 mb-4 md:mb-0 md:mx-2"
-        >
-          VTutor, say something!
-        </button>
-        <button
-          onClick={handleChangeStyle}
-          className="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-green-500 transition duration-300 md:mx-2"
-        >
-          Change outfit
-        </button>
+      <div className="w-full ml-34">
+        <div className="flex flex-col md:flex-row justify-start items-start mt-10 text-2xl">
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="border border-gray-300 rounded py-2 px-4 mb-4 md:mb-0 md:mr-4 text-2xl md:mx-2"
+            placeholder="Enter text"
+          />
+          <button
+            onClick={handleSubmit}
+            disabled={isSpeaking}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 mb-4 md:mb-0 md:mx-2"
+          >
+            VTutor, say something!
+          </button>
+          <button
+            onClick={handleChangeStyle}
+            className="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-green-500 transition duration-300 md:mx-2"
+          >
+            Change outfit
+          </button>
+        </div>
       </div>
       <div className="md:hidden min-h-[50vh]"></div>
       <VTutor iframe_origin={iframeOrigin} />
